@@ -1,0 +1,14 @@
+Now lets get back to processing the wikipedia dataset. In this part you will write your own mappers and reducers to perform the following tasks on the entire 1-month input dataset. Create an EMR Job Flow to:
+
+Filter out elements based on the rules discussed in the previous page
+Aggregate the pageviews from hourly views to daily views
+Calculate the total pageviews for each article
+
+For every article that has page-views over 100,000, print the following line as output:
+<total month views>\t<article name>\t
+                  <date1:page views for date1>\t <date2:page views for date2> ...
+
+
+Note: Print out the page views for all dates in a single line
+Getting the input filename from within a Mapper: As the date/time information is encoded in the filename, Hadoop streaming makes the filename available to every map task through the environment variables map_input_file or map.input.file. For example, the filename can be accessed in python using the statement os.environ["map_input_file"], or in Java using the statement System.getenv("map_input_file").
+Note: If you are having trouble getting the filename, check the Hadoop version in EMR. If you are using the latest version, the environment variable will be mapreduce_map_input_file

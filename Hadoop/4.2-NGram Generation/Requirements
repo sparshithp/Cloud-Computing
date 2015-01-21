@@ -1,0 +1,22 @@
+In the first part of the project, you will work with a plain-text corpus of 6000 books from Project Gutenberg and generate a list of n-grams from it.
+
+Note: For this checkpoint, assign the tag with Key: Project and Value: 4.2 for all resources. Please visit the Piazza post for any updates regarding this part of the Project.
+
+An n-gram is phrase with n-words in it. For example a 1-gram is a single word such as "this" or "where", and 2-grams are phrases with two words, such as "this is" or "where is".
+
+This text corpus has been processed and stored in the following S3 location:
+
+s3://15-319-s13/book-dataset/pg_00 to s3://15-319-s13/book-dataset/pg_38
+
+Task 1:
+
+Process the entire text corpus using a MapReduce job to output every phrase in the corpus, along with the number of times the phrase appeared. These n-grams must be in the following plain-text format:
+
+<phrase><\t><count>
+
+For Example:
+
+this    1000
+this is 500
+this is a   250
+

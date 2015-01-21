@@ -1,0 +1,44 @@
+In order to pass the Job Retainment Examination, you have to write a program or script that performs the following tasks:
+
+Create and manage an ELB such that:
+The ELB redirects HTTP:80 requests to HTTP:80 on the instance
+Record the DNS Name of the created ELB
+Set up the page /heartbeat?username=<yourandrewid> as the ELB health check page
+
+Note: If you remember from last week, a data center instance needs to be “activated” by passing it your username. This step ensures that the ELB passes your username to your data center instances.
+
+Create a Launch Configuration for the instances that will become part of the auto scaling group, with the following parameters:
+AMI ID: ami-3c8f3a54
+Instance Type: You can choose from (m1-m3) small/medium/large
+Detailed Monitoring: enabled
+
+Analyse the traffic pattern and figure out a good rule for Scale Out and Scale In operations. We define the following rules to give you an idea of the various parameters that need to be set. Please note that you may find it difficult to achieve a passing grade using these parameters.
+Minimum Instance Size: 1
+Maximum Instance Size: 5
+Desired Instance Capacity: 1
+ELB Name: <MyELB> (choose your ELB name, make sure it is alphanumeric)
+
+Create clever Auto Scale Policies that will fit the traffic pattern:
+Create a ScaleOut policy that automatically adds a single instance to the auto scaling group.
+Create a ScaleIn policy that automatically removes a single instance from the auto scaling group.
+
+Link your Auto Scaling group to your ELB.
+
+Create CloudWatch Alarms that invoke the appropriate policy for the following scenarios. Please note that you may find it difficult to achieve a passing grade using these parameters and we provide them as an example. You can use any metrics you find useful from CloudWatch:
+Scale out when the group's CPU load exceeds 80% on average over a 5 minute interval.
+Scale in when the group's CPU load is below 20% on average over a 5 minute interval.
+
+Link the CloudWatch Alarms to the ScaleOut and ScaleIn rules of your Auto Scaling Group.
+Link your ARNs to the AutoScalingGroup. There should be separate emails for instance launch and termination.
+Create a load generator (ami-f40ba19c) instance of size m3.medium and activate it using the following URL:
+http://<load-generator>/username?username=<your_andrew_id>
+Note: Do not use any load generator other than m3.medium.
+
+Before launching the test, you may wish to warm up your load balancer by visiting the URL: http://<load-generator-dns>/warmup. Enter your ELB DNS and a testId of your choice here. In case you have forgotten from last week, a testId is a unique alphanumeric string that you should assign to each of your tests, so that you can view the logs later. You may choose to do this step multiple times until you are satisfied that your ELB has warmed up. The instance-hours used in the warm up phase do not count towards your final grade.
+
+Once your ELB is warmed up (by now you should know how to do this), start the test by visiting the URL: http://<your-load-generator-dns>/begin-phase-3
+
+Once again, enter your ELB DNS and a testId of your choice here. This will start a 100-minute long test. You can view the progress of the test using the URL:
+
+Your code should request the following HTTP URL:
+http://<your-load-generator-dns>/begin-phase-3?dns=<your-elb-dns>&testId=<your-test-id>

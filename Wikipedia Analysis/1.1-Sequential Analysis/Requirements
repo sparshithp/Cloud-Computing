@@ -1,0 +1,43 @@
+Download a single hour's worth of logs from
+
+s3://wikipediatraf/201407-gz/pagecounts-20140701-000000.gz
+using s3cmd
+The file contains all of the pages from all WikiMedia projects. Our aim is to identify trending topics from the English Wikipedia articles. In order to do this, develop a script or write a program in any language to:
+
+Filter out all pages that are not english wikipedia. (This means that the log lines should start with en, without any suffix attached).
+There are many special pages in wikipedia that do not need to be considered when trying to find trending topics. Exclude any pages whose title starts with the following strings:
+Media:
+Special:
+Talk:
+User:
+User_talk:
+Project:
+Project_talk:
+File:
+File_talk:
+MediaWiki:
+MediaWiki_talk:
+Template:
+Template_talk:
+Help:
+Help_talk:
+Category:
+Category_talk:
+Portal:
+Wikipedia:
+Wikipedia_talk:
+
+
+Wikipedia policy states that all English articles must start with an uppercase character. Filter out all articles that start with lowercase English characters. You may notice that some articles have non-english titles, you should choose to retain them in the analysis.
+You may also get results which refer to image files, exclude any article that ends with the following extensions (Keep all other extensions intact). (.jpg, .gif, .png, .JPG, .GIF, .PNG, .txt, .ico)
+
+Finally, there are some boilerplate articles which are returned by Mediawiki, which should be excluded as well. Articles with titles that exactly (case sensitive) match any of the following strings should be excluded:
+404_error/
+Main_Page
+Hypertext_Transfer_Protocol
+Favicon.ico
+Search
+
+Once the filtering is done, output the remaining articles in the following	format:
+<article name>\t<page views>
+(Note that the \t stands for the tab character) The output should sorted in the order of number of page views.

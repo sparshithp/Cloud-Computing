@@ -1,0 +1,3 @@
+#!/bin/bash
+
+wc -l pagecounts-20140701-000000

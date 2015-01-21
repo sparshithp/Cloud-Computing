@@ -1,0 +1,27 @@
+In the previous part of the project, we generated the n-gram counts for a text corpus using a MapReduce job.
+
+In this part we will compute a statistical language model using the n-gram counts and store them in an efficient manner so that they can be accessed easily from a web interface.
+
+Note: For this checkpoint, assign the tag with Key: Project and Value: 4.3 for all resources. Please visit the Piazza post for any updates regarding this part of the Project.
+
+A statistical language model is a collection of probabilities of words appearing after a phrase. Using the n-gram counts as input, the probability of a word appearing after a phrase can be expressed in simple terms as:
+
+Pr(word ∣∣ phrase) = Count(phrase+word)Count(phrase)
+As an example, consider the following input:
+
+this                     1000
+this is                  500
+this is a                125
+this is a blue           60
+this is a blue house     20
+The following probabilities can be calculated:
+
+Pr(is ∣∣ this) = Count(this is)Count(this)=5001000=0.5
+Pr(a ∣∣ this is) = Count(this is a)Count(this is)=125500=0.25
+Task
+Your task is to generate the statistical language model for all words and phrases appearing in the n-gram counts generated from a text corpus. You must complete this task using a MapReduce job that reads the input file from HDFS and writes the output file to HBase. Specifically, you must:
+
+Develop a schema in HBase to store the words appearing after phrases and their probabilities. You must also account for how the data is likely to be accessed from the user interface. Users will type a phrase and will expect to see an ordered list of the next word that the user is “most” likely to type.
+Write a Mapreduce program to read the n-gram counts generated from the previous checkpoint, and process them to generate the probabilities as outlined above. The output from the MapReduce program should be written directly to an HBase table, following the schema that you have designed in step 1.
+
+

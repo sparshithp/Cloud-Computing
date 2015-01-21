@@ -1,0 +1,23 @@
+Using the Amazon EC2 API, please write code that does the following:
+
+Launches an m3.medium load generator (ami-1810b270) with the correct tag
+Launches an m3.medium data center instance (ami-324ae85a) with the correct tag
+Please note that the instance tagging for steps 1 and 2 above must be done in your code, and not manually through the AWS web console.
+Activate your instances by providing your username at the URLs:
+http://<your-load-generator-instance-dns-name>/username/
+http://<your-data-center-instance-dns-name>/username/
+Submit the data center instance’s DNS name to:
+
+http://<your-load-generator-instance-dns-name>/part/one/i/want/more/
+
+To submit using code, you can request a URL like: http://<your-load-generator-instance-dns-name>/part/one/i/want/more?dns=ec2-54-165-107-16.compute.amazonaws.com&testId=Pizza
+
+
+At this point, the load generator will start firing a massive amount of traffic to your instance. Unfortunately, a single m3.medium instance is incapable of handling this traffic. Every minute, you should see the updated performance (average requests per second) score at the URL: http://your-load-generator-instance-dns-name/view-logs?name= result_<yourusername>_<testid>.txt.
+
+
+This page is updated every 60 seconds with the latest performance score.
+
+To pass the final exam, your code should quickly scale up the number of instances in the data center. To do this, your code should perform Steps 2-5 (above), compute the cumulative average rps of all connected instances.
+
+Your goal is for all instances in the data center to handle an aggregate of 3600 requests per second.

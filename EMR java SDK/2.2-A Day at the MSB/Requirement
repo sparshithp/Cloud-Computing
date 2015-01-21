@@ -1,0 +1,73 @@
+
+Create an ELB that:
+Redirects HTTP:80 requests from the load balancer to HTTP:80 on the instance
+
+Record the DNS Name of the created ELB
+Set up the page /heartbeat?username=<yourandrewid> as the health check page
+
+If you remember from last week, a data center instance needs to be “activated” by passing it your username. This step ensures that the ELB passes your username to your data center instances.
+
+Create a Launch Configuration for the instances that will become part of the auto scaling group, with the following parameters:
+AMI ID: ami-ec14ba84
+Instance Type: m3.medium
+Detailed Monitoring: enabled
+
+After analyzing the traffic pattern, figure out a good rule for Scale Out and Scale In operations. Below we define the following default rules to give you an idea of the various parameters that need to be set. Please note that you may find it difficult to achieve a passing grade using these parameters.
+Minimum Instance Size: 1
+Maximum Instance Size: 15
+Desired Instance Capacity: 1
+ELB Name: MyELB <choose your ELB name, make sure it’s alphanumeric>
+
+Create the following Auto Scale Policies :
+Create a ScaleOut policy that automatically adds a single instance to the auto scaling group.
+Create a ScaleIn policy that automatically removes a single instance from the auto scaling group.
+
+Link your Auto Scaling group to your ELB.
+
+Create CloudWatch Alarms that invoke the appropriate policy for the following scenarios:
+Scale out when the group's CPU load exceeds 80% on average over a 5 minute interval.
+Scale in when the group's CPU load is below 20% on average over a 5 minute interval.
+
+Link the CloudWatch Alarms to the ScaleOut and ScaleIn rules of your Auto Scaling Group.
+
+Create a load generator (ami-32d37a5a) instance of size m3.medium and activate it using the following URL:
+http://<load-generator>/username?username=<your_andrew_id>
+                            
+Before launching the test, you may wish to warm up your load balancer using the URL: http://<load-generator-dns>/warmup Enter your ELB DNS and a testId of your choice here. In case you’ve forgotten from last week, a testId is a unique alphanumeric string that you should assign to each of your tests, so that you can view the logs later. You may choose to do this step multiple times until you are satisfied that your ELB has warmed up. The instance-hours used in the warm up phase do not count towards your final grade.
+Once your ELB is warmed up, start the test by visiting the URL: http://<your-load-generator-dns>/begin-phase-2
+Once again, enter your ELB DNS and a testId of your choice here. This will start a 40-minute long test. You can view the progress of the test using the URL.
+
+
+Your code should request the following HTTP URL:
+
+http://<your-load-generator-dns>/begin-phase-2?dns=<your-elb-dns>&testId=<your-test-id>
+You can view the progress of this test using the page:
+
+http:/<your-load-generator-dns>/view-logs?name=result_<yourUsername>_<yourTestId>
+
+The third line of the page will contain a traffic pattern token. You need to enter this token in the checkpoint quiz. It helps us identify you and the traffic pattern used for your test while grading.
+
+You can monitor your ELB using the web console:
+
+The graph above is for HTTP 2xx requests (successful requests). There are other graphs for failed HTTP requests (non-2xx). If you are seeing a large number of non-2xx pages, it indicates that you have misconfigured your ELB or that you are not scaling fast enough to handle the spikes.
+
+The test will give you updates of the rps for the good traffic every minute. You can see them at the URL:
+http://<your-load-generator>/view-logs?name=result_<username>_<testId>.txt
+
+You can also view a sample of 100 requests recently received by a data center instance using the URL: http://<any-data-center-instance>/view-logs
+
+
+This page updates every 5 seconds. You will see some requests for tracking users, interspersed with DDoS traffic. As the DDoS traffic spikes, you will notice that the number of good requests handled becomes much less than the DDoS traffic. This page could give you an intuition about what is happening on your system.
+
+At the end of 40 minutes, you will be told your average rps for the entire test and given a final token to hand in. Please submit these in the OLI checkpoint quiz.
+
+Your code should terminate all resources except for the load generator and the load balancer. Once terminated, you can calculate the instance-hours either by using the CloudWatch alarms that you used to Scale Out and Scale In, or by using the “Healthy Hosts” chart on the ELB Monitoring View.
+You can launch this test several times, as long as you are within the overall project budget limits. Your performance will depend on how well you configure the Auto Scaling Group and CloudWatch alarm criteria.
+
+To do well this week, read (and think) about the various parameters that you can modify to achieve your performance targets. Some of the important criteria are listed here for your reference:
+
+Parameter	Average score for a passing grade (Passing corresponds to 75% on that question)
+Mean rps for the full 40 minute test	2000
+Number of bonuses earned (you earn one bonus for each minute of the test where you handle over 1500 rps)	20
+Number of instance-hours used	35
+
